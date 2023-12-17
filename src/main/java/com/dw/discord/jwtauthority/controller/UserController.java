@@ -20,7 +20,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/auth/signup")
+    @PostMapping("/signup")
     public ResponseEntity<UserDto> signup(
             @Valid @RequestBody UserDto userDto
     ) {

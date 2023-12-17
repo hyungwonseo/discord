@@ -43,7 +43,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
 
-//			.addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+//			    .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .accessDeniedHandler(jwtAccessDeniedHandler)
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers("/api/authenticate").permitAll()
                         .requestMatchers("/api/signup").permitAll()
-                        .requestMatchers("/api/auth/signup").permitAll()
+                        .requestMatchers("/api/basic/signup").permitAll()
                         .anyRequest().authenticated()
                 )
 
