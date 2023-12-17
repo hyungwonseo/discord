@@ -43,13 +43,13 @@ public class CustomExceptionHandler {
         ), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(Exception.class)
-    protected ResponseEntity<BaseResponse<Map<String, String>>> defaultException(Exception ex) {
-        Map<String, String> errors = Map.of("미처리에러", (ex.getMessage() != null ? ex.getMessage() : "No Exception Message"));
-        return new ResponseEntity<>(new BaseResponse<>(
-                ResultCode.ERROR.name(),
-                errors,
-                ResultCode.ERROR.getMsg()
-        ), HttpStatus.BAD_REQUEST);
-    }
+//    @ExceptionHandler(Exception.class)
+//    protected ResponseEntity<BaseResponse<Map<String, String>>> defaultException(Exception ex) {
+//        Map<String, String> errors = Map.of("미처리에러", (ex.getMessage() != null ? ex.getMessage() : "No Exception Message"));
+//        return new ResponseEntity<>(new BaseResponse<>(
+//                ResultCode.ERROR.name(),
+//                errors,
+//                ResultCode.ERROR.getMsg()
+//        ), HttpStatus.BAD_REQUEST);
+//    }
 }

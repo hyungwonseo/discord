@@ -15,7 +15,6 @@ import jakarta.persistence.JoinColumn;
 @Entity
 @Table(name = "`user`")
 public class User {
-
 	@Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

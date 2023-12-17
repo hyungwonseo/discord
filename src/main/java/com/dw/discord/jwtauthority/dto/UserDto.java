@@ -36,10 +36,7 @@ public class UserDto {
 		super();
 	}
 
-	public UserDto(@NotNull @Size(min = 3, max = 50) String username,
-			@NotNull @Size(min = 3, max = 100) String password, @NotNull @Size(min = 3, max = 50) String nickname,
-			Set<AuthorityDto> authorityDtoSet) {
-		super();
+	public UserDto(String username, String password, String nickname, Set<AuthorityDto> authorityDtoSet) {
 		this.username = username;
 		this.password = password;
 		this.nickname = nickname;
