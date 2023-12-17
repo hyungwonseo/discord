@@ -1,5 +1,7 @@
 package com.dw.discord.jwtauthority.controller;
 
+import com.dw.discord.dto.BaseResponse;
+import com.dw.discord.enumstatus.ResultCode;
 import com.dw.discord.jwtauthority.dto.LoginDto;
 import com.dw.discord.jwtauthority.dto.TokenDto;
 import com.dw.discord.jwtauthority.jwt.JwtFilter;
@@ -11,15 +13,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins="http://localhost:3000",
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE})
 public class AuthController {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -31,7 +32,7 @@ public class AuthController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
+    public ResponseEntity<BaseResponse<TokenDto>> authorize(@Valid @RequestBody LoginDto loginDto) {
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), 
@@ -46,6 +47,9 @@ public class AuthController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(
+                new BaseResponse<>(ResultCode.SUCCESS.name(), new TokenDto(jwt), ResultCode.SUCCESS.getMsg()),
+                httpHeaders,
+                HttpStatus.OK);
     }
 }

@@ -1,5 +1,7 @@
 package com.dw.discord.jwtauthority.controller;
 
+import com.dw.discord.dto.BaseResponse;
+import com.dw.discord.enumstatus.ResultCode;
 import com.dw.discord.jwtauthority.dto.UserDto;
 import com.dw.discord.jwtauthority.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -7,12 +9,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins="http://localhost:3000",
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE})
 public class UserController {
     private final UserService userService;
 
@@ -21,21 +23,33 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserDto> signup(
+    public ResponseEntity<BaseResponse<UserDto>> signup(
             @Valid @RequestBody UserDto userDto
     ) {
-        return ResponseEntity.ok(userService.signup(userDto));
+        return ResponseEntity.ok(new BaseResponse<>(
+                ResultCode.SUCCESS.name(),
+                userService.signup(userDto),
+                ResultCode.SUCCESS.getMsg()
+        ));
     }
 
     @GetMapping("/user")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public ResponseEntity<UserDto> getMyUserInfo(HttpServletRequest request) {
-        return ResponseEntity.ok(userService.getCurrentUserWithAuthorities());
+    public ResponseEntity<BaseResponse<UserDto>> getCurrentUserInfo(HttpServletRequest request) {
+        return ResponseEntity.ok(new BaseResponse<>(
+                        ResultCode.SUCCESS.name(),
+                        userService.getCurrentUserWithAuthorities(),
+                        ResultCode.SUCCESS.getMsg()
+        ));
     }
 
     @GetMapping("/user/{username}")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<UserDto> getUserInfo(@PathVariable String username) {
-        return ResponseEntity.ok(userService.getUserWithAuthorities(username));
+    public ResponseEntity<BaseResponse<UserDto>> getUserInfo(@PathVariable String username) {
+        return ResponseEntity.ok(new BaseResponse<>(
+                        ResultCode.SUCCESS.name(),
+                        userService.getUserWithAuthorities(username),
+                        ResultCode.SUCCESS.getMsg()
+        ));
     }
 }
